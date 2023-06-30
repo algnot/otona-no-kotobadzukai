@@ -1,0 +1,30 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("database_url")
+}
+
+model TokenMapper {
+    id    Int     @id @default(autoincrement())
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt  
+    exp   String
+    user  User  @relation(fields: [uid], references: [uid])
+    uid   String
+}
+
+model User {
+  id    Int     @id @default(autoincrement())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt      
+  uid   String  @unique
+  email String  @unique
+  salt String
+  password String
+  name  String
+  googleAuthId  String? 
+  tokens  TokenMapper[]
+}
