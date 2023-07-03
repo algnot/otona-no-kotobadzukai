@@ -14,6 +14,7 @@ model TokenMapper {
     exp   String
     user  User  @relation(fields: [uid], references: [uid])
     uid   String
+    isActive Boolean @default(true)
 }
 
 model User {
@@ -22,8 +23,8 @@ model User {
   updatedAt     DateTime @updatedAt      
   uid   String  @unique
   email String  @unique
-  salt String
-  password String
+  salt String?
+  password String?
   name  String
   googleAuthId  String? 
   tokens  TokenMapper[]

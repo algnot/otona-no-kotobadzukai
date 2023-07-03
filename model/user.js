@@ -45,6 +45,36 @@ module.exports = class User extends Base {
     return this;
   }
 
+  async registerWithGoogle(name, email, googleAuthId) {
+    if (await !validateEmail(email)) {
+      throw new Error("Email is not valid");
+    }
+    const client = await this.client();
+    await client.upsert({
+      where: {
+        email: email,
+      },
+      update: {
+        googleAuthId: googleAuthId,
+      },
+      create: {
+        name: name,
+        email: email,
+        googleAuthId: googleAuthId,
+        uid: await this.randomUid(),
+        salt: await this.genSult()
+      }
+    })
+    const user = await client.findFirstOrThrow({
+      where: {
+        email: email,
+      },
+    });
+    this.id = user.id;
+    await this.get();
+    return this;
+  }
+
   async genSult() {
     const salt = await bcrypt.genSalt(10);
     return salt;

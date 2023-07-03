@@ -22,10 +22,11 @@ module.exports = class TokenMapper extends Base {
             throw new Error("Token is expired");
         }
         const client = await this.client();
-        const user = await client.findFirstOrThrow({
+        const user = await client.findFirst({
             where: {
                 uid: this.uid,
-                exp: this.exp.toString()
+                exp: this.exp.toString(),
+                isActive: true
             },
             include: {
                 user: true,
