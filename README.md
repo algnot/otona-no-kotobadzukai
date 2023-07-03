@@ -35,9 +35,8 @@ Project backend ของ `ตก(ต้นก้า)` กับ `กฟ(กั�
 ```
 - Install node
 ```bash
-    1: 📄 nvm install v.18.16.1
-    2: 📄 nvm alias default 18.16.2
-    3: 📄 nvm use
+    1: 📄 nvm install v18.16.1
+    2: 📄 nvm alias default 18.16.1
 ```
 - Check node version
 ```bash
