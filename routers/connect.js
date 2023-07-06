@@ -15,9 +15,7 @@ router.post('/register', async (req, res) => {
         res.send(await user.getResponse());
     } catch (error) {
         logger.error(`❌ [Register API] Can not register with error: ${error.message}`);
-        res.status(400).json({
-            status :error.message
-        });
+        res.status(400).send(error.message);
     }
 })
 
@@ -29,9 +27,7 @@ router.post('/register-with-google', async (req, res) => {
         res.send(await user.getJWT());
     } catch (error) {
         logger.error(`❌ [Register with google API] Can not register with error: ${error.message}`);
-        res.status(400).json({
-            status :error.message
-        });
+        res.status(400).send(error.message);
     }
 })
 
@@ -43,9 +39,7 @@ router.post('/login', async (req, res) => {
         res.send(await user.getJWT());
     } catch (error) {
         logger.error(`❌ [Login API] Can not login with error: ${error.message}`);
-        res.status(400).json({
-            status :error.message
-        });
+        res.status(400).send(error.message);
     }
 })
 
@@ -64,9 +58,7 @@ router.get('/me', async (req, res) => {
         res.send(user);
     } catch (error) {
         logger.error(`❌ [Get account API] Can not get user info with error: ${error.message}`);
-        res.status(400).json({
-            status :error.message
-        });
+        res.status(400).send(error.message);
     }
 })
 

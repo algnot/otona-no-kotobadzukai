@@ -97,6 +97,9 @@ module.exports = class User extends Base {
     if (!user) {
       throw new Error("Email is not found");
     }
+    if(!user.password) {
+      throw new Error("User is registered with Google account");
+    }
     if (!(await bcrypt.compare(password, user.password))) {
       throw new Error("Password is not correct");
     }
