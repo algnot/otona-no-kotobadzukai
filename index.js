@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-// const fs = require("fs");
+const fs = require("fs");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const Logger = require('@taro-common/common-logger');
@@ -21,18 +21,18 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
 app.use(cors());
 
-// const routers = fs.readdirSync("./routers");
+const routers = fs.readdirSync("./routers");
 
-// routers.forEach((router) => {
-//   try {
-//     const routerPath = `./routers/${router}`;
-//     const routerName = router.replace(".js", "");
-//     app.use(`/${routerName}`, require(routerPath).router);
-//     logger.info(`✔️  Router /${routerName} is created`);
-//   } catch (error) {
-//     logger.error(`❌  Router /${router} is not created with error: ${error}`);
-//   }
-// });
+routers.forEach((router) => {
+  try {
+    const routerPath = `./routers/${router}`;
+    const routerName = router.replace(".js", "");
+    app.use(`/${routerName}`, require(routerPath).router);
+    logger.info(`✔️  Router /${routerName} is created`);
+  } catch (error) {
+    logger.error(`❌  Router /${router} is not created with error: ${error}`);
+  }
+});
 
 app.get("/", (req, res) => {
   res.send("Hello world");
