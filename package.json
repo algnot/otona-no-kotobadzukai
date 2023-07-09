@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js -L",
-    "migrete": "npx prisma generate && npx prisma migrate dev --name init"
+    "migrete": "npx prisma generate && npx prisma migrate dev --name init",
+    "deploy": "npx prisma generate && npx prisma migrate dev --name init && node index.js"
   },
   "author": "",
   "license": "ISC",

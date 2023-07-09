@@ -132,4 +132,4 @@ dist
 # package lock
 package-lock.json
 
-./prisma/migrations
+/prisma/migrations
