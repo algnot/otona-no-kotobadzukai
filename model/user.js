@@ -18,7 +18,7 @@ module.exports = class User extends Base {
 
   constructor(id = null) {
     super("User", id);
-    this.privateFields = ["password", "salt", "googleAuthId"];
+    this.privateFields = ["password", "salt"];
   }
 
   async register(name, email, password) {
@@ -42,6 +42,17 @@ module.exports = class User extends Base {
       salt: salt,
       uid: await this.randomUid(),
     });
+    return this;
+  }
+
+  async setPassword(password) {
+    if(!this.salt){
+      this.salt = await this.genSult();
+    }
+    const passwordEncrypt = await bcrypt.hash(password, this.salt);
+    await this.update({
+      password: passwordEncrypt,
+    })
     return this;
   }
 

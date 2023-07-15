@@ -52,12 +52,63 @@ router.get('/me', async (req, res) => {
         const decoded = jwtDecode(authorization);
         const tokenMapper = new TokenMapper(decoded.uid, decoded.exp);
         let user = await tokenMapper.findUser();
+        if(!user.password){
+            user.canSetPassword = true;
+        } else {
+            user.canSetPassword = false;
+        }
         user.password = undefined;
         user.salt = undefined;
-        user.googleAuthId = undefined;
         res.send(user);
     } catch (error) {
         logger.error(`❌ [Get account API] Can not get user info with error: ${error.message}`);
+        res.status(400).send(error.message);
+    }
+})
+
+router.post('/link-google', async (req, res) => {
+    try {
+        const { authorization } = req.headers;
+        if (!authorization) {
+            throw new Error("Authorization header is required");
+        }
+        const { googleAuthId } = req.body;
+        validatePayload(['googleAuthId'], req.body);
+        const decoded = jwtDecode(authorization);
+        const tokenMapper = new TokenMapper(decoded.uid, decoded.exp);
+        let user = await tokenMapper.findUser();
+        if(user.googleAuthId) {
+            throw new Error("Account is already linked");
+        }
+        user = await new User(user.id).get();
+        await user.update({
+            googleAuthId: googleAuthId
+        })
+        res.send(await user.getResponse());
+    } catch (error) {
+        logger.error(`❌ [Link Google Account API] Can not link google account with error: ${error.message}`);
+        res.status(400).send(error.message);
+    }
+})
+
+router.post('/set-password', async (req, res) => {
+    try {
+        const { authorization } = req.headers;
+        if (!authorization) {
+            throw new Error("Authorization header is required");
+        }
+        const { password } = req.body;
+        validatePayload(['password'], req.body);
+        const decoded = jwtDecode(authorization);
+        const tokenMapper = new TokenMapper(decoded.uid, decoded.exp);
+        let user = await tokenMapper.findUser();
+        user = await new User(user.id).get();
+        await user.setPassword(password);
+        res.json({
+            message: "Password is set"
+        });
+    } catch (error) {
+        logger.error(`❌ [Login API] Can not login with error: ${error.message}`);
         res.status(400).send(error.message);
     }
 })
