@@ -14,7 +14,7 @@ module.exports = class Base {
     this.id = id;
   }
 
-  async get(include = {}) {
+  async get(include = false) {
     if (!this.id) {
       throw new Error("id is not defined");
     }
