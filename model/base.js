@@ -19,15 +19,17 @@ module.exports = class Base {
         if(!this.id) {
             throw new Error("id is not defined");
         }
+
+        let isHaveInclude = {};
+        if(include) {
+            isHaveInclude.include = include;
+        }
     
         const result = await prisma[this._name].findFirst({
             where: {
               id: parseInt(this.id),
             },
-            include: {
-                _count: true,
-                ...include,
-            }
+            ...isHaveInclude,
         });
         if(!result) {
             throw new Error(`Not found ${this._name} with id ${this.id}`);
