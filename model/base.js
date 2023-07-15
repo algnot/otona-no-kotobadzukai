@@ -26,7 +26,7 @@ module.exports = class Base {
         where: {
           id: parseInt(this.id),
         },
-        ...isHaveInclude,
+        include: include
       });
     } else {
       result = await prisma[this._name].findFirst({
