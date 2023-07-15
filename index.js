@@ -4,16 +4,12 @@ const fs = require("fs");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const Logger = require('@taro-common/common-logger');
-const Config = require('@taro-common/common-config');
 require("dotenv").config();
 
 const post = process.env.port || 4000;
 
 // Logger
 const logger = new Logger();
- 
-// Config
-const config = new Config();
 
 // Middleware
 app.use(bodyParser.json());

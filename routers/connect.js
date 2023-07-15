@@ -52,14 +52,15 @@ router.get('/me', async (req, res) => {
         const decoded = jwtDecode(authorization);
         const tokenMapper = new TokenMapper(decoded.uid, decoded.exp);
         let user = await tokenMapper.findUser();
+        user = await new User(user.id).get({
+            paymentDetail: true
+        });
         if(!user.password){
             user.canSetPassword = true;
         } else {
             user.canSetPassword = false;
         }
-        user.password = undefined;
-        user.salt = undefined;
-        res.send(user);
+        res.send(await user.getResponse());
     } catch (error) {
         logger.error(`❌ [Get account API] Can not get user info with error: ${error.message}`);
         res.status(400).send(error.message);

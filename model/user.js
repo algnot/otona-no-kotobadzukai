@@ -15,10 +15,11 @@ module.exports = class User extends Base {
   salt = null;
   googleAuthId = null;
   tokens = [];
+  paymentDetail = [];
 
   constructor(id = null) {
     super("User", id);
-    this.privateFields = ["password", "salt"];
+    this.privateFields = ["password", "salt", "tokens"];
   }
 
   async register(name, email, password) {

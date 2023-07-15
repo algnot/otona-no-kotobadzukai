@@ -17,6 +17,17 @@ model TokenMapper {
     isActive Boolean @default(true)
 }
 
+model PaymentDetail {
+  id    Int     @id @default(autoincrement())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt  
+  name  String
+  number String
+  isPromptpay Boolean @default(false)
+  user  User  @relation(fields: [uid], references: [uid])
+  uid   String
+}
+
 model User {
   id    Int     @id @default(autoincrement())
   createdAt     DateTime @default(now())
@@ -28,4 +39,5 @@ model User {
   name  String
   googleAuthId  String? 
   tokens  TokenMapper[]
+  paymentDetail  PaymentDetail[]
 }
