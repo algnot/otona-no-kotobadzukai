@@ -13,7 +13,7 @@ module.exports = class PaymentDetail extends Base {
 
     constructor(id = null) {
         super("PaymentDetail", id);
-        this.privateFields = ["uid"];
+        this.privateFields = [];
         this.computeFields = [{
             name: "QRCodeLink",
             compute: this.getQrCode
@@ -31,9 +31,12 @@ module.exports = class PaymentDetail extends Base {
     }
 
     async getResponse() {
-        const res = await super.getResponse();
-        res.user.salt = undefined;
-        res.user.password = undefined;
+        let res = await super.getResponse();
+        console.log(res);
+        if(res.user) {
+            res.user.salt = undefined;
+            res.user.password = undefined;
+        }
         return res;
     }
 
