@@ -24,6 +24,7 @@ router.post('/', async (req, res) => {
             number: number,
             isPromptpay: isPromptpay,
             uid: user.uid,
+            ref: new PaymentDetail().randomRef(),
         });
         res.send(await paymentDetail.getResponse());
     } catch (error) {
@@ -54,6 +55,25 @@ router.get('/:id', async (req, res) => {
     } catch (error) {
         logger.error(`❌ [Get Payment Detail API] Can not Get Payment Detail with error: ${error.message}`);
         res.status(400).send(error.message); 
+    }
+})
+
+router.get('/ref/:refId', async (req, res) => {
+    try {
+        const { refId } = req.params;
+        const paymentDetail = await new PaymentDetail().searchOne({
+            ref: refId
+        }, {
+            user: true,
+        })
+        let response = await paymentDetail.getResponse();
+        response.user.googleAuthId = undefined;
+        response.user.id = undefined;
+        response.user.uid = undefined;
+        res.send(response);
+    } catch (error) {
+        logger.error(`❌ [Get Payment Detail API] Can not Get Payment Detail with error: ${error.message}`);
+        res.status(400).send(error.message);
     }
 })
 

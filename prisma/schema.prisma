@@ -25,6 +25,7 @@ model PaymentDetail {
   number String
   isPromptpay Boolean @default(false)
   user  User  @relation(fields: [uid], references: [uid])
+  ref   String
   uid   String
 }
 
