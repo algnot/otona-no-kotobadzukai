@@ -41,4 +41,57 @@ model User {
   googleAuthId  String? 
   tokens  TokenMapper[]
   paymentDetail  PaymentDetail[]
+  ownerBill Bill[]
+  userBill  UserBill[]
+}
+
+model BillItem {
+  id    Int   @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt    
+  bill        Bill @relation(fields: [billId], references: [id])
+  billId      Int
+  amount      Float
+  name        String
+  taxPercent  Float  @default(0)
+  serviceChargePercent  Float  @default(0)
+  totalAmount  Float @default(0)
+}
+
+model BillPaymemt {
+  id    Int   @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt  
+  name        String
+  number      String
+  isPromptpay Boolean @default(false)
+  bill        Bill @relation(fields: [billId], references: [id])
+  billId      Int
+}
+
+model UserBill {
+  id    Int   @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt  
+  user  User? @relation(fields: [uid], references: [uid])
+  uid   String? 
+  name  String?
+  email String?
+  bill  Bill  @relation(fields: [billId], references: [id])
+  billId  Int
+}
+
+model Bill {
+  id    Int   @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt    
+  owner       User @relation(fields: [ownerUid], references: [uid])
+  ownerUid    String   
+  userBill    UserBill[]
+  billItem    BillItem[]
+  totalTax    Float  @default(0)
+  totalServiceCharge Float  @default(0)
+  totalAmount Float @default(0)
+  payment     BillPaymemt[]
+  name        Sting
 }

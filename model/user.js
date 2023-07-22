@@ -16,6 +16,8 @@ module.exports = class User extends Base {
   googleAuthId = null;
   tokens = [];
   paymentDetail = [];
+  ownerBill = [];
+  userBill = [];
 
   constructor(id = null) {
     super("User", id);
