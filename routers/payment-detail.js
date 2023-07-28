@@ -28,7 +28,6 @@ router.post('/', async (req, res) => {
         });
         res.send(await paymentDetail.getResponse());
     } catch (error) {
-        console.log(error);
         logger.error(`❌ [Create Payment Detail API] Can not Create Payment Detail with error: ${error.message}`);
         res.status(400).send(error.message);
     }

@@ -141,4 +141,30 @@ module.exports = class Base {
     }
     return this;
   }
+
+  async searchMany(query, cursor=0, size=5,include = false) {
+    let result = null;
+    if (include) {
+      result = await prisma[this._name].findMany({
+        where: query,
+        include: include,
+        skip: parseInt(cursor),
+        take: parseInt(size + 1)
+      });
+    } else {
+      result = await prisma[this._name].findMany({
+        where: query,
+        skip: parseInt(cursor),
+        take: parseInt(size + 1)
+      });
+    }
+    if (!result) {
+      throw new Error(`Not found ${this._name} with query ${JSON.stringify(query)}`);
+    }
+
+    return {
+      nextCursor: result.length > size ? parseInt(cursor) + parseInt(size) : -1,
+      data: result.slice(0, size)
+    };
+  }
 };
