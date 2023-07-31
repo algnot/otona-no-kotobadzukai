@@ -22,16 +22,10 @@ Project backend ของ `ตก(ต้นก้า)` กับ `กฟ(กั�
 - สร้าง User postgresql ผ่าน pgAdmin ด้วย `username:root` และ `passwaord:root`
 - Install nvm
 ```bash
-    1: 📄 curl -sL https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.0/install.sh -o install_nvm.sh
-    2: 📄 bash install_nvm.sh
-    3: 📄 export NVM_DIR="$HOME/.nvm"
-           [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" 
-           [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" 
-```
-- Restart terminal
-```bash
-    1: 📄 source ~/.bash_profile
-    2: 📄 command -v nvm
+    1: 📄 brew install nvm
+    2: 📄 export NVM_DIR="$HOME/.nvm"
+  [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
+  [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  
 ```
 - Install node
 ```bash
