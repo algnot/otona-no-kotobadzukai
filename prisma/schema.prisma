@@ -51,6 +51,8 @@ model BillItem {
   updatedAt   DateTime @updatedAt    
   bill        Bill @relation(fields: [billId], references: [id])
   billId      Int
+  unitAmount  Float  @default(0)
+  quantity    Float  @default(1)
   amount      Float
   name        String
   taxPercent  Float  @default(0)
@@ -91,7 +93,7 @@ model Bill {
   ownerUid    String   
   name        String
   state       String @default("open")
-  total       Float  @default(0)
+  amount      Float  @default(0)
   totalTax    Float  @default(0)
   totalServiceCharge Float  @default(0)
   totalAmount Float @default(0)

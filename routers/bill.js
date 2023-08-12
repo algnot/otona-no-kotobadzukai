@@ -19,6 +19,7 @@ router.get("/my-bill-owner", async (req, res) => {
 
         const bill = new Bill();
         const bills = await bill.getBillByOwner(owner, cursor, size);
+
         res.send(bills);
     } catch (error) {
         logger.error(`❌ [Get Bill API] Can not get bill with error: ${error.message}`);

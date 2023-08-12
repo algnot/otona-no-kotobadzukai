@@ -13,6 +13,7 @@ module.exports = class Bill extends Base {
     totalTax = 0;
     totalAmount = 0;
     totalServiceCharge = 0;
+    amount = 0;
     name = null;
     ref = null;
 
@@ -34,7 +35,7 @@ module.exports = class Bill extends Base {
             throw new Error("Items is not valid");
         }
         items.forEach(item => {
-            validatePayload(["name", "amount", "taxPercent", "serviceChargePercent"], item, "items");
+            validatePayload(["name", "amount", "taxPercent", "serviceChargePercent", "quantity"], item, "items");
         });
         validatePayload(["name", "number", "isPromptpay"], payment, "payment");
     }
@@ -54,22 +55,22 @@ module.exports = class Bill extends Base {
         await this._createUserBill(user);
         await this._createPayment(payment);
 
-        let total = 0; 
+        let amount = 0; 
         let totalServiceCharge = 0;
         let totalTax = 0;
         let totalAmount = 0;
         for(const item of items) {
             const createdBillItem = await this._createBillItem(item);
-            total += createdBillItem.amount;
+            amount += createdBillItem.amount;
             totalServiceCharge += createdBillItem.totalServiceCharge;
             totalTax += createdBillItem.totalTax;
             totalAmount += createdBillItem.totalAmount;
         }
         await this.update({
-            total: total,
-            totalTax: totalTax,
-            totalServiceCharge: totalServiceCharge,
-            totalAmount: totalAmount
+            amount: parseFloat(amount),
+            totalTax: parseFloat(totalTax),
+            totalServiceCharge: parseFloat(totalServiceCharge),
+            totalAmount: parseFloat(totalAmount)
         })
         await this.get({
             billItem: true,
@@ -81,17 +82,20 @@ module.exports = class Bill extends Base {
 
     async _createBillItem(item) {
         const billItem = new BillItem();
-        const tatalServiceCharge = item.amount * item.serviceChargePercent / 100;
-        const totalTax = (item.amount + tatalServiceCharge) * item.taxPercent / 100;
-        const totalAmount = item.amount + tatalServiceCharge + totalTax;
+        const amount = item.amount * item.quantity;
+        const tatalServiceCharge = amount * item.serviceChargePercent / 100;
+        const totalTax = (amount + tatalServiceCharge) * item.taxPercent / 100;
+        const totalAmount = amount + tatalServiceCharge + totalTax;
         await billItem.create({
             name: item.name,
-            amount: item.amount,
-            taxPercent: item.taxPercent,
-            serviceChargePercent: item.serviceChargePercent,
-            totalTax: totalTax,
-            totalServiceCharge: tatalServiceCharge,
-            totalAmount: totalAmount,
+            unitAmount: parseFloat(item.amount),
+            quantity: parseFloat(item.quantity),
+            amount: parseFloat(amount),
+            taxPercent: parseFloat(item.taxPercent),
+            serviceChargePercent: parseFloat(item.serviceChargePercent),
+            totalTax: parseFloat(totalTax),
+            totalServiceCharge: parseFloat(tatalServiceCharge),
+            totalAmount: parseFloat(totalAmount),
             bill: {
                 connect: {
                     id: this.id
@@ -196,8 +200,10 @@ module.exports = class Bill extends Base {
                 owner: {
                     uid: owner.uid
                 },
+                id: {
+                    gt: parseInt(cursor)
+                }
             },
-            skip: parseInt(cursor),
             take: parseInt(size) + 1,
             include: {
                 userBill: true,
@@ -228,9 +234,11 @@ module.exports = class Bill extends Base {
                             uid: user.uid
                         }
                     }
+                },
+                id: {
+                    gt: parseInt(cursor)
                 }
             },
-            skip: parseInt(cursor),
             take: parseInt(size) + 1,
             include: {
                 userBill: true,
