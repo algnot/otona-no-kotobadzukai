@@ -201,7 +201,7 @@ module.exports = class Bill extends Base {
                     uid: owner.uid
                 },
                 id: {
-                    gt: parseInt(cursor)
+                    gt: parseInt(cursor - 1),
                 }
             },
             take: parseInt(size) + 1,
@@ -236,7 +236,7 @@ module.exports = class Bill extends Base {
                     }
                 },
                 id: {
-                    gt: parseInt(cursor)
+                    gt: parseInt(cursor - 1),
                 }
             },
             take: parseInt(size) + 1,
