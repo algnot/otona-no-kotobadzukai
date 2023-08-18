@@ -19,6 +19,12 @@ app.use(cors());
 
 const routers = fs.readdirSync("./routers");
 
+fs.readdirSync("./public").forEach((file) => {
+  if (file.includes(".pdf")) {
+    fs.unlinkSync(`./public/${file}`);
+  }
+});
+
 routers.forEach((router) => {
   try {
     const routerPath = `./routers/${router}`;
@@ -36,7 +42,7 @@ app.get("/", (req, res) => {
 
 app.listen(post, async () => {
   try {
-    logger.info(`🤖 Server is running on port ${post}`);
+    logger.info(`🤖 Server is running on http://localhost:${post}`);
   } catch (error) {
     logger.error(`❌ Error when starting server: ${error}`);
   }

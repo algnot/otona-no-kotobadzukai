@@ -4,6 +4,8 @@ const UserBill = require("./userBill");
 const BillItem = require("./billItems");
 const BillPayment = require("./billPayment");
 const User = require("./user");
+const Mailer = require("./mailer");
+const Config = require("@taro-common/common-config");
 
 module.exports = class Bill extends Base {
     owner = null;
@@ -257,5 +259,21 @@ module.exports = class Bill extends Base {
             nextCursor: bills.length > size ?  bills[bills.length - 1].id : -1,
             data: bills.slice(0, size),
         };
+    }
+
+    async sendEmail() {
+        const mailer = new Mailer();
+        const config = new Config();
+        const invoiceUrlLink = await config.get("frontend_path") + "/bill/" + this.ref;
+        const invoiceUrlPdf = await config.get("backend_path") + "/pdf/preview/bill/" + this.ref;
+
+        mailer.sendEmailByTemplete("invoice", {
+            owner_name: this.owner.name,
+            owner_email: this.owner.email,
+            invoice_total: this.totalAmount,
+            invoice_url_link: invoiceUrlLink,
+            invoice_url_pdf: invoiceUrlPdf,
+            to_email: this.userBill[0].email
+        })
     }
 }

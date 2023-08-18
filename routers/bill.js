@@ -71,6 +71,7 @@ router.post("/", async (req, res) => {
         const bill = new Bill();
         bill.validateBillPayload(req.body, owner);
         await bill.processBillPayload(req.body, owner);
+        bill.sendEmail();
         res.send(await bill.getResponse())
     } catch (error) {
         logger.error(`❌ [Create Bill API] Can not create bill with error: ${error.message}`);
