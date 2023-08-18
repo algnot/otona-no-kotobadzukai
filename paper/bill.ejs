@@ -401,7 +401,7 @@
                     เลขที่พร้อมเพย์ <b><%= payment[0].number %></b> หรือสแกน QR Code ด้านล่าง          
                 </p>
                 <div>
-                    <img alt="payment" src="<%= context.promptpay_api_url %>/api?id=<%= payment[0].number %>&amount=<%= payment[0].totalAmount %>" style="width: 150px; height: 150px;">
+                    <img alt="payment" src="<%= context.promptpay_api_url %>/api?id=<%= payment[0].number %>&amount=<%= totalAmount %>" style="width: 150px; height: 150px;">
                 </div>
             </div>
         </div>
