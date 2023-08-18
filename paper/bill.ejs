@@ -208,7 +208,7 @@
         main table.summary {
             width: calc(40% + 2cm);
             margin-left: 60%;
-            margin-top: .5cm;
+            margin-top: .25cm;
         }
 
         /*
@@ -280,13 +280,13 @@
     <!-- The header element will appear on the top of each page of this invoice document. -->
     <header>
         <div class="headerSection" style="padding: 0.25cm 1cm;">
-            <div class="logoAndName">
+            <div style="width: fit-content;">
                 <h1>
                     Invoice
                 </h1>
-                <div>
+                <span>
                     <%= name %>
-                </div>
+                </span>
             </div>
             <!-- Details about the invoice are on the right top side of each page. -->
             <div class="invoiceDetails">
@@ -299,7 +299,7 @@
         </div>
         <!-- The two header rows are divided by an blue line, we use the HR element for this. -->
         <hr />
-        <div class="headerSection" style="margin: 0.5cm 1cm;">
+        <div class="headerSection" style="margin: .5cm 1cm 0 .5cm;">
             <!-- The clients details come on the left side below the logo and company name. -->
             <div>
                 <h3>จาก</h3>
@@ -390,7 +390,7 @@
                 <p style="text-align: justify;">
                     &nbsp; &nbsp; ท่านสามารถติดตามสถานะของ invoice ได้ <b><a href="<%= context.frontend_path %>/bill/<%= ref %>" target="_blank">ที่นี่</a></b>
                     หากมีข้อสงสัยเกี่ยวกับสถานะของ invoice โปรดติดต่อที่ <b><a href="mailto:<%= owner.email %>" target="_blank"><%= owner.email %></a></b>
-                    ในกรณีที่ท่านทำการชำระแล้วโปรดแนบหลักฐานการชำระที่ <b><a href="<%= context.frontend_path %>/bill/<%= ref %>" target="_blank">ที่นี่</a></b>
+                    ในกรณีที่ท่านทำการชำระแล้วโปรดแนบหลักฐานการชำระ <b><a href="<%= context.frontend_path %>/bill/<%= ref %>" target="_blank">ที่นี่</a></b>
                     และทำการกดปุ่ม ยืนยันการชำระเงิน และรอ <%= owner.name %></b> ทำการยืนยันการชำระเงินดังกล่าว
                 </p>
             </div>
