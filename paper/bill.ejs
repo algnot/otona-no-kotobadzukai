@@ -371,13 +371,16 @@
         <b>ราคารวม</b>
         <div><%= numberWithCommas(amount) %> ฿</div>
 
-        <b>ภาษี (<%= billItem[0].taxPercent %>%)</b>
-        <div><%= numberWithCommas(totalTax) %> ฿</div>
-
         <b>Service Charge (<%= billItem[0].serviceChargePercent %>%)</b>
         <div><%= numberWithCommas(totalServiceCharge) %> ฿</div>
 
-        <b style="font-size: 21px;">รวม</b>
+        <b>ราคารวม Service Charge</b>
+        <div><%= numberWithCommas(totalServiceCharge + amount) %> ฿</div>
+
+        <b>ภาษี (<%= billItem[0].taxPercent %>%)</b>
+        <div><%= numberWithCommas(totalTax) %> ฿</div>
+
+        <b style="font-size: 21px;">ราคาทั้งหมด</b>
         <b style="font-size: 21px;"><%= numberWithCommas(totalAmount) %> ฿</b>
     </div>
     <!-- Within the aside tag we will put the terms and conditions which shall be shown below the invoice table. -->
