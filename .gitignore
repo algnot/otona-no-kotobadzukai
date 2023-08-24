@@ -135,3 +135,5 @@ package-lock.json
 /prisma/migrations
 /public/*.pdf
 !/public/.gitkeep
+/public/uploads/*
+!/public/uploads/.gitkeep

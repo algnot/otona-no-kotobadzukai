@@ -31,4 +31,17 @@ router.get('/preview/:template/:id', async (req, res) => {
     }
 })
 
+router.get('/debug/:template/:id', async (req, res) => {
+    try {
+        const { template, id } = req.params;
+        const pdfGenerator = new PdfGenerator(template, id);
+        await pdfGenerator.getData();
+        const html = await pdfGenerator.ejsToHtml();
+        res.send(html);
+    } catch (error) {
+        logger.error(`❌ [PDF Generator] Error when generating pdf: ${error}`);
+        res.status(500).send(error.message);
+    }
+})
+
 exports.router = router;
